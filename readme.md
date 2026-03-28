@@ -18,6 +18,7 @@
 ## 🔥 News
 
 * Code and pretrained models will be released.
+* **[2026.3.15]** Our paper is accepted by T-PAMI.
 
 ---
 
