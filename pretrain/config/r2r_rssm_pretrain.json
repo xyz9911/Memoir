@@ -1,0 +1,54 @@
+{
+    "model_config": "pretrain/config/r2r_model_config.json",
+    "checkpoint": null,
+    "output_dir": "datasets/R2R/pretrain/grduet_tssm_dropout",
+    "max_txt_len": 200,
+
+    "policy_weight": 1.0,
+    "max_kl_weight": 2.0,
+    "kl_scheduler": "constant",
+    "recon_weight": 1.0,
+    "recon_scheduler": "constant",
+    "kl_balancing": null,
+
+    "train_batch_size": 32,
+    "val_batch_size": 32,
+    "gradient_accumulation_steps": 1,
+    "learning_rate": 5e-05,
+    "valid_steps": 100,
+    "log_steps": 100,
+    "num_train_steps": 6000,
+    "optim": "adamw",
+    "betas": [
+        0.9,
+        0.98
+    ],
+    "dropout": 0.1,
+    "weight_decay": 0.01,
+    "grad_norm": 5.0,
+    "warmup_steps": 100,
+    "seed": 0,
+    "fp16": false,
+    "n_workers": 1,
+    "pin_mem": true,
+    "init_pretrained": "lxmert",
+    "train_datasets": {
+        "R2R": {
+            "name": "R2R",
+            "train_traj_file": "datasets/R2R/annotations/R2R_train_enc.json",
+            "train_aug_traj_file": "datasets/R2R/annotations/pretrain_map/R2R_prevalent_aug_train_enc.jsonl",
+            "val_seen_traj_file": "datasets/R2R/annotations/R2R_val_seen_enc.json",
+            "val_unseen_traj_file": "datasets/R2R/annotations/R2R_val_unseen_enc.json",
+            "connectivity_dir": "datasets/R2R/connectivity",
+            "img_ft_file": "datasets/R2R/features/clip_vit-b16_mp3d_hm3d_gibson.hdf5",
+            "sent_embed_file": "datasets/R2R/features/pth_bert_base_uncased.hdf5",
+            "scanvp_cands_file": "datasets/R2R/annotations/scanvp_candview_relangles.json",
+            "tasks": [
+                "rssm"
+            ],
+            "mix_ratio": [
+                1.0
+            ]
+        }
+    }
+}
