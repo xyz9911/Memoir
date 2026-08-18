@@ -6,15 +6,17 @@
 
 ### Imagination-Guided Experience Retrieval for Memory-Persistent Vision-and-Language Navigation
 
+[![Project Page](https://img.shields.io/badge/🐬-Project%20Page-blue)](https://xyz9911.github.io/memoir/)
 [![Paper](https://img.shields.io/badge/Paper-arXiv-b31b1b.svg)](https://arxiv.org/abs/2510.08553)
+[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow?style=flat&logo=huggingface&logoColor=yellow)](https://huggingface.co/datasets/xyz9911/Memoir/tree/main)
 [![License](https://img.shields.io/badge/License-Apache--2.0-green.svg)](LICENSE)
-
 </div>
 
 ## 🔥 News
 
 - **[2026-03-15]** Memoir was accepted by IEEE Transactions on Pattern Analysis and Machine Intelligence (T-PAMI).
 - Code is now available. Datasets, image features, and pretrained checkpoints are hosted on [Hugging Face](https://huggingface.co/datasets/xyz9911/Memoir/tree/main).
+- We host a [project webpage](https://xyz9911.github.io/memoir/).
 
 ## 📖 Contents
 
