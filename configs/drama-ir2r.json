@@ -1,0 +1,31 @@
+{
+  "schema": "memoir-drama-ir2r-config-v1",
+  "seed": 0,
+  "batch_size": 2,
+  "minimum_updates": 20000,
+  "lr": 1e-05,
+  "weight_decay": 0.01,
+  "eval_every": 500,
+  "save_every": 100,
+  "backup_backend": "filesystem",
+  "host_volume": "/mnt/g",
+  "host_volume_source": "G:\\",
+  "min_free_gib": 12,
+  "run_dir": "/home/xxl/memoir-disk-20261116/runs/drama-v1/ir2r",
+  "backup_dir": "/home/xxl/memoir-disk-20261116/backups/drama-v1/ir2r",
+  "datasets": "/home/xxl/projects/Memoir/datasets",
+  "tours": "/home/xxl/projects/Memoir/datasets/R2R/tours_iVLN.json",
+  "split_manifest": "/home/xxl/projects/Memoir-drama-20261116/configs/drama-split.json",
+  "pretrain_run": "/home/xxl/memoir-disk-20261116/runs/drama-v1/pretrain",
+  "pretrain_backup": "/home/xxl/memoir-disk-20261116/backups/drama-v1/pretrain",
+  "storage_mount": "/home/xxl/memoir-disk-20261116",
+  "storage_image": "/mnt/g/VLN-Research/memoir-drama-20261116.ext4",
+  "numerics": {
+    "deterministic_algorithms": true,
+    "cudnn_deterministic": true,
+    "cudnn_benchmark": false,
+    "matmul_tf32": false,
+    "cudnn_tf32": false,
+    "cublas_workspace_config": ":4096:8"
+  }
+}

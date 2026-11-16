@@ -1,0 +1,19 @@
+{
+  "drama": {
+    "url": "https://github.com/realwenlongwang/Drama",
+    "commit": "a50bd54c34e77d1d13e988a031733a47817098e2",
+    "use": "architecture/config reference only; no Drama training loop or source copied"
+  },
+  "mamba": {
+    "url": "https://github.com/state-spaces/mamba",
+    "tag": "v2.2.4",
+    "commit": "95d8aba8a8c75aedcaa6143713b11e745e7cd0d9",
+    "license": "Apache-2.0",
+    "use": "mathematical reference and verbatim pinned step method in numerical parity tests"
+  },
+  "files": {
+    "vlnbert/drama_mamba2.py": "5110b7baaf88f98a3248ba44acf128cf0536ccc96893837bfbfde86cdd667b61",
+    "tests/vendor/mamba2_v2_2_4.py.txt": "605e4439ff0baec8d8acaf4a191d9f0570eea9900065a065909124c472b08707",
+    "tests/vendor/MAMBA_LICENSE": "760939b000194d04548ede6a857bbe735d1695d8422ec85955c8e2bd7f4b95c5"
+  }
+}

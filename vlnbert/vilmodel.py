@@ -14,6 +14,7 @@ import torch.nn.functional as F
 from torch import Tensor, device, dtype
 
 from transformers import BertPreTrainedModel, GPT2Config, T5Config
+from vlnbert.drama_mamba2 import DramaMamba2Prior, freeze_encoders
 from utils.transformer_decoder import TransformerDecoderModel, T5DecoderModel
 
 from utils.ops import create_transformer_encoder, extend_neg_masks, gen_seq_masks, \
@@ -978,7 +979,19 @@ class GlocalTextPathNavCMT(BertPreTrainedModel):
             self.deter_size = 672
             self.bottleneck_size = 768
             self.lang_init = Project(config.hidden_size, config.hidden_size, self.deter_size)
-            self.prior = TSSMPriorBlock(self.stoch_size, self.stoch_discrete, config.hidden_size, self.deter_size)
+            self.world_model_backend = getattr(config, 'world_model_backend', 'tssm')
+            if self.world_model_backend == 'drama_mamba2':
+                self.prior = DramaMamba2Prior(
+                    self.stoch_size, self.stoch_discrete, config.hidden_size, self.deter_size,
+                    d_model=getattr(config, 'drama_d_model', 512),
+                    n_layers=getattr(config, 'drama_layers', 2),
+                    d_state=getattr(config, 'drama_d_state', 16),
+                    headdim=getattr(config, 'drama_headdim', 64),
+                    dropout=getattr(config, 'drama_dropout', 0.1))
+            elif self.world_model_backend == 'tssm':
+                self.prior = TSSMPriorBlock(self.stoch_size, self.stoch_discrete, config.hidden_size, self.deter_size)
+            else:
+                raise ValueError('Unsupported world_model_backend: ' + self.world_model_backend)
             self.posterior = PosteriorBlock(self.stoch_size, self.stoch_discrete, config.hidden_size, self.deter_size, config.hidden_size)
 
         else:
@@ -991,6 +1004,8 @@ class GlocalTextPathNavCMT(BertPreTrainedModel):
         self.memory_attention = OutAttention(config)
 
         self.init_weights()
+        if getattr(config, 'freeze_encoders', False):
+            freeze_encoders(self)
 
         if config.fix_lang_embedding or config.fix_local_branch:
             for k, v in self.embeddings.named_parameters():
@@ -1007,6 +1022,12 @@ class GlocalTextPathNavCMT(BertPreTrainedModel):
                 v.requires_grad = False
             for k, v in self.og_head.named_parameters():
                 v.requires_grad = False
+
+    def train(self, mode=True):
+        super().train(mode)
+        if getattr(self.config, 'freeze_encoders', False):
+            freeze_encoders(self)
+        return self
 
     def forward_text(self, txt_ids, txt_masks):
         txt_token_type_ids = torch.zeros_like(txt_ids)

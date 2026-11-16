@@ -34,6 +34,19 @@ def get_vlnbert_models(args, config=None):
     vis_config = PretrainedConfig.from_pretrained(cfg_name)
     
     vis_config.world_model_type = 'tssm'
+    vis_config.world_model_backend = getattr(args, 'world_model_backend', 'tssm')
+    vis_config.freeze_encoders = getattr(args, 'freeze_encoders', False)
+    for option, default in [('drama_d_model', 512), ('drama_layers', 2),
+                            ('drama_d_state', 16), ('drama_headdim', 64), ('drama_dropout', 0.1)]:
+        setattr(vis_config, option, getattr(args, option, default))
+    if vis_config.world_model_backend == 'drama_mamba2':
+        from vlnbert.drama_mamba2 import WORLD_MODEL_PREFIXES
+        is_drama = any(k.removeprefix('bert.').startswith('prior.layers.0.') for k in new_ckpt_weights)
+        if not is_drama:
+            if not getattr(args, 'initialize_drama_world', False):
+                raise ValueError('A pretrained Drama checkpoint is required; old TSSM weights cannot silently initialize a Drama IR2R run. Use initialize_drama_world only for the explicit fresh pretraining stage.')
+            new_ckpt_weights = {k: v for k, v in new_ckpt_weights.items()
+                                if not k.removeprefix('bert.').startswith(WORLD_MODEL_PREFIXES)}
 
     if args.tokenizer == 'xlm':
         vis_config.type_vocab_size = 2

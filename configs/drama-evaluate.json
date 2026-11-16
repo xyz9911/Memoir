@@ -1,0 +1,25 @@
+{
+  "schema": "memoir-drama-train-dev-comparison-v1",
+  "scope": "complete_train_dev_author_tours",
+  "evaluation_seed": 917,
+  "released_checkpoint": "/home/xxl/projects/memoir-smoke-20261022/datasets/R2R/outputs/ir2r_result/ckpts/best_val_unseen",
+  "released_checkpoint_sha256": "8c91d263e806ca0e478fdb13d0a8489576fd3d4bd82d313de277e87c6dcb109d",
+  "ir2r_run": "/home/xxl/memoir-disk-20261116/runs/drama-v1/ir2r",
+  "ir2r_backup": "/home/xxl/memoir-disk-20261116/backups/drama-v1/ir2r",
+  "output_path": "/home/xxl/memoir-disk-20261116/runs/drama-v1/comparison",
+  "backup_path": "/home/xxl/memoir-disk-20261116/backups/drama-v1/comparison",
+  "backup_backend": "filesystem",
+  "host_volume": "/mnt/g",
+  "host_volume_source": "G:\\",
+  "min_free_gib": 12,
+  "storage_mount": "/home/xxl/memoir-disk-20261116",
+  "storage_image": "/mnt/g/VLN-Research/memoir-drama-20261116.ext4",
+  "numerics": {
+    "deterministic_algorithms": true,
+    "cudnn_deterministic": true,
+    "cudnn_benchmark": false,
+    "matmul_tf32": false,
+    "cudnn_tf32": false,
+    "cublas_workspace_config": ":4096:8"
+  }
+}
