@@ -345,13 +345,14 @@ class CachedTrajectories:
             distance[i,:len(v)]=torch.from_numpy(r['distance'][:]).to(device)
         return {'language':lang,'text_mask':txt_mask,'visual':vis,'mask':mask,'distance':distance}
 
-def wm_loss(model,batch,horizon=5,reward_weight=.1,visual_weight=1.,kl_weight=2.,overshoot_kl_weight=2.):
+def wm_loss(model,batch,horizon=5,reward_weight=.1,visual_weight=1.,kl_weight=2.,overshoot_kl_weight=2.,
+            *, contrastive_pool=None, first_label=0, normalizers=None):
     """KL + cross-batch/time InfoNCE + GT next-goal-distance MSE, posterior/prior/overshoot."""
     text,tm,visual,mask,dist=(batch[k] for k in ('language','text_mask','visual','mask','distance'))
     B,T,_=visual.shape
     labels=torch.full((B,T),-1,device=visual.device,dtype=torch.long)
-    labels[mask]=torch.arange(int(mask.sum()),device=visual.device)
-    pool=F.normalize(model.obs_transform(visual[mask]),dim=-1)
+    labels[mask]=torch.arange(int(mask.sum()),device=visual.device) + first_label
+    pool=contrastive_pool if contrastive_pool is not None else F.normalize(model.obs_transform(visual[mask]),dim=-1)
     deter=model.lang_init(text[:,0]);post=model.forward_posterior(deter,visual[:,0])
     prev=torch.cat((post['stoch'],deter),-1).unsqueeze(1);cache=None
     kl_sum=visual.new_zeros(());visual_sum=visual.new_zeros(());reward_sum=visual.new_zeros(());over_sum=visual.new_zeros(())
@@ -385,6 +386,8 @@ def wm_loss(model,batch,horizon=5,reward_weight=.1,visual_weight=1.,kl_weight=2.
         branches=new_branches
         prev=state.unsqueeze(1);cache=out['past_key_values']
     if transitions==0: raise RuntimeError('No transitions in training batch')
+    if normalizers is not None:
+        transitions, recons, overs = normalizers
     pieces={'kl':kl_sum/transitions,'overshoot_kl':over_sum/max(1,overs),
             'visual_nce':visual_sum/max(1,recons),'reward_mse':reward_sum/max(1,recons)}
     return (kl_weight*pieces['kl']+overshoot_kl_weight*pieces['overshoot_kl']+

@@ -1,0 +1,42 @@
+{
+  "experiment": "memoir-mamba2-full-20261119",
+  "author_revision": "4fb5ed6685645065b5cf637b6b2239183471c856",
+  "seed": 0,
+  "d_model": 768,
+  "layers": 4,
+  "d_state": 16,
+  "headdim": 64,
+  "drama_dropout": 0.1,
+  "steps": 5000,
+  "batch_size": 32,
+  "microbatch": 4,
+  "pano_batch_size": 32,
+  "overshoot_horizon": 5,
+  "reward_weight": 0.1,
+  "visual_weight": 1.0,
+  "kl_weight": 2.0,
+  "overshoot_kl_weight": 2.0,
+  "lr": 0.00005,
+  "betas": [0.9, 0.98],
+  "adam_eps": 0.000001,
+  "grad_clip": 5.0,
+  "weight_decay": 0.01,
+  "warmup_steps": 100,
+  "save_every": 100,
+  "min_free_gib": 4,
+  "numerics": {
+    "deterministic_algorithms": true,
+    "cudnn_deterministic": true,
+    "cudnn_benchmark": false,
+    "matmul_tf32": false,
+    "cudnn_tf32": false,
+    "cublas_workspace_config": ":4096:8"
+  },
+  "required_sha256": {
+    "annotations/R2R_train_enc.json": "7745f32c24e40b75107c11593ec768eb2b26a5ab784675346abef3c9edf46d5c",
+    "annotations/pretrain_map/R2R_prevalent_aug_train_enc.jsonl": "2301831f7e835737b4621b831aadce7002ec6613a6ee22061abafba2e5b8f4b6",
+    "annotations/scanvp_candview_relangles.json": "cead28ce0d9b248766c5295338e0809eeedfec499b1eafd39e15e63609394d14",
+    "features/clip_vit-b16_mp3d_hm3d_gibson.hdf5": "35b6e1658f2283df15caa8b01e5f2be32ff59f9cc314721fceafbf88dec4b983",
+    "pretrained/grduet_tssm_dropout.pt": "871db1c876fd8d1e18f63236204675b2642de50eb708f10d8454f2542d446e5d"
+  }
+}
